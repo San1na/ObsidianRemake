@@ -3839,7 +3839,7 @@ do
             AnchorPoint = Vector2.new(1, 0),
             BackgroundColor3 = "MainColor",
             Position = UDim2.fromScale(1, 0),
-            Size = UDim2.fromOffset(38, 20),
+            Size = UDim2.fromOffset(42, 22),
             Parent = Button,
         })
         New("UICorner", {
@@ -3847,14 +3847,16 @@ do
             Parent = Switch,
         })
         New("UIPadding", {
-            PaddingBottom = UDim.new(0, 3),
-            PaddingLeft = UDim.new(0, 3),
-            PaddingRight = UDim.new(0, 3),
-            PaddingTop = UDim.new(0, 3),
+            PaddingBottom = UDim.new(0, 2),
+            PaddingLeft = UDim.new(0, 2),
+            PaddingRight = UDim.new(0, 2),
+            PaddingTop = UDim.new(0, 2),
             Parent = Switch,
         })
         local SwitchStroke = New("UIStroke", {
             Color = "OutlineColor",
+            Thickness = 1.5,
+            Transparency = 0.3,
             Parent = Switch,
         })
 
@@ -3866,6 +3868,12 @@ do
         })
         New("UICorner", {
             CornerRadius = UDim.new(1, 0),
+            Parent = Ball,
+        })
+        local BallStroke = New("UIStroke", {
+            Color = Color3.fromRGB(255, 255, 255),
+            Thickness = 1,
+            Transparency = 0.5,
             Parent = Ball,
         })
 
@@ -3881,7 +3889,7 @@ do
             local Offset = Toggle.Value and 1 or 0
 
             Switch.BackgroundTransparency = Toggle.Disabled and 0.75 or 0
-            SwitchStroke.Transparency = Toggle.Disabled and 0.75 or 0
+            SwitchStroke.Transparency = Toggle.Disabled and 0.75 or (Toggle.Value and 0 or 0.3)
 
             Switch.BackgroundColor3 = Toggle.Value and Library.Scheme.AccentColor or Library.Scheme.MainColor
             SwitchStroke.Color = Toggle.Value and Library.Scheme.AccentColor or Library.Scheme.OutlineColor
@@ -3909,9 +3917,12 @@ do
                 AnchorPoint = Vector2.new(Offset, 0),
                 Position = UDim2.fromScale(Offset, 0),
             }):Play()
+            TweenService:Create(SwitchStroke, Library.TweenInfo, {
+                Transparency = Toggle.Value and 0 or 0.3,
+            }):Play()
 
-            Ball.BackgroundColor3 = Library.Scheme.FontColor
-            Library.Registry[Ball].BackgroundColor3 = "FontColor"
+            Ball.BackgroundColor3 = Toggle.Value and Color3.fromRGB(255, 255, 255) or Library.Scheme.FontColor
+            Library.Registry[Ball].BackgroundColor3 = Toggle.Value and function() return Color3.fromRGB(255, 255, 255) end or "FontColor"
         end
 
         function Toggle:OnChanged(Func)
@@ -5798,10 +5809,23 @@ function Library:Notify(...)
         },
     })
 
-    local Background = Library:MakeOutline(FakeBackground, Library.CornerRadius, 5)
-    Background.AutomaticSize = Enum.AutomaticSize.Y
-    Background.Position = Library.NotifySide:lower() == "left" and UDim2.new(-1, -6, 0, -2) or UDim2.new(1, 6, 0, -2)
-    Background.Size = UDim2.fromScale(1, 0)
+    local Background = New("Frame", {
+        AutomaticSize = Enum.AutomaticSize.Y,
+        BackgroundColor3 = "BackgroundColor",
+        Position = Library.NotifySide:lower() == "left" and UDim2.new(-1, -6, 0, 0) or UDim2.new(1, 6, 0, 0),
+        Size = UDim2.fromScale(1, 0),
+        Parent = FakeBackground,
+    })
+    New("UICorner", {
+        CornerRadius = UDim.new(0, Library.CornerRadius + 2),
+        Parent = Background,
+    })
+    New("UIStroke", {
+        Color = "OutlineColor",
+        Thickness = 2,
+        Transparency = 0.2,
+        Parent = Background,
+    })
     Library:UpdateDPI(Background, {
         Position = false,
         Size = false,
@@ -5809,23 +5833,35 @@ function Library:Notify(...)
 
     local Holder = New("Frame", {
         BackgroundColor3 = "MainColor",
-        Position = UDim2.fromOffset(2, 2),
-        Size = UDim2.new(1, -4, 1, -4),
+        Position = UDim2.fromOffset(3, 3),
+        Size = UDim2.new(1, -6, 1, -6),
         Parent = Background,
     })
     New("UICorner", {
-        CornerRadius = UDim.new(0, Library.CornerRadius - 1),
+        CornerRadius = UDim.new(0, Library.CornerRadius),
+        Parent = Holder,
+    })
+    New("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
+        }),
+        Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0.97),
+            NumberSequenceKeypoint.new(1, 0.99)
+        }),
+        Rotation = 90,
         Parent = Holder,
     })
     New("UIListLayout", {
-        Padding = UDim.new(0, 4),
+        Padding = UDim.new(0, 6),
         Parent = Holder,
     })
     New("UIPadding", {
-        PaddingBottom = UDim.new(0, 8),
-        PaddingLeft = UDim.new(0, 8),
-        PaddingRight = UDim.new(0, 8),
-        PaddingTop = UDim.new(0, 8),
+        PaddingBottom = UDim.new(0, 10),
+        PaddingLeft = UDim.new(0, 12),
+        PaddingRight = UDim.new(0, 12),
+        PaddingTop = UDim.new(0, 10),
         Parent = Holder,
     })
 
@@ -5840,7 +5876,8 @@ function Library:Notify(...)
         Title = New("TextLabel", {
             BackgroundTransparency = 1,
             Text = Data.Title,
-            TextSize = 15,
+            TextSize = 16,
+            TextTransparency = 0,
             TextXAlignment = Enum.TextXAlignment.Left,
             TextWrapped = true,
             Parent = Holder,
@@ -5856,6 +5893,7 @@ function Library:Notify(...)
             BackgroundTransparency = 1,
             Text = Data.Description,
             TextSize = 14,
+            TextTransparency = 0.3,
             TextXAlignment = Enum.TextXAlignment.Left,
             TextWrapped = true,
             Parent = Holder,
@@ -5926,11 +5964,16 @@ function Library:Notify(...)
             DeleteConnection:Disconnect()
         end
 
-        TweenService
-            :Create(Background, Library.NotifyTweenInfo, {
-                Position = Library.NotifySide:lower() == "left" and UDim2.new(-1, -6, 0, -2) or UDim2.new(1, 6, 0, -2),
-            })
-            :Play()
+        local Tween1 = TweenService:Create(Background, Library.NotifyTweenInfo, {
+            Position = Library.NotifySide:lower() == "left" and UDim2.new(-1, -6, 0, 0) or UDim2.new(1, 6, 0, 0),
+            BackgroundTransparency = 1,
+        })
+        local Tween2 = TweenService:Create(Holder, Library.NotifyTweenInfo, {
+            BackgroundTransparency = 1,
+        })
+        
+        Tween1:Play()
+        Tween2:Play()
         
         task.delay(Library.NotifyTweenInfo.Time, function()
             Library.Notifications[FakeBackground] = nil
@@ -5942,22 +5985,40 @@ function Library:Notify(...)
 
     local TimerHolder = New("Frame", {
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 7),
+        Size = UDim2.new(1, 0, 0, 8),
         Visible = (Data.Persist ~= true and typeof(Data.Time) ~= "Instance") or typeof(Data.Steps) == "number",
         Parent = Holder,
     })
     local TimerBar = New("Frame", {
         BackgroundColor3 = "BackgroundColor",
-        BorderColor3 = "OutlineColor",
-        BorderSizePixel = 1,
+        BorderSizePixel = 0,
         Position = UDim2.fromOffset(0, 3),
-        Size = UDim2.new(1, 0, 0, 2),
+        Size = UDim2.new(1, 0, 0, 3),
         Parent = TimerHolder,
+    })
+    New("UICorner", {
+        CornerRadius = UDim.new(1, 0),
+        Parent = TimerBar,
     })
     TimerFill = New("Frame", {
         BackgroundColor3 = "AccentColor",
         Size = UDim2.fromScale(1, 1),
         Parent = TimerBar,
+    })
+    New("UICorner", {
+        CornerRadius = UDim.new(1, 0),
+        Parent = TimerFill,
+    })
+    New("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
+        }),
+        Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0.3),
+            NumberSequenceKeypoint.new(1, 0)
+        }),
+        Parent = TimerFill,
     })
 
     if typeof(Data.Time) == "Instance" then
@@ -5980,8 +6041,15 @@ function Library:Notify(...)
     Library.Notifications[FakeBackground] = Data
 
     FakeBackground.Visible = true
+    Background.BackgroundTransparency = 1
+    Holder.BackgroundTransparency = 1
+    
     TweenService:Create(Background, Library.NotifyTweenInfo, {
-        Position = UDim2.fromOffset(-2, -2),
+        Position = UDim2.fromOffset(0, 0),
+        BackgroundTransparency = 0,
+    }):Play()
+    TweenService:Create(Holder, Library.NotifyTweenInfo, {
+        BackgroundTransparency = 0,
     }):Play()
 
     task.delay(Library.NotifyTweenInfo.Time, function()
