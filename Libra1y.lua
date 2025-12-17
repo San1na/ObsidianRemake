@@ -1750,6 +1750,10 @@ function Library:AddContextMenu(
                 Position = true,
             },
         })
+        New("UICorner", {
+            CornerRadius = UDim.new(0, Library.CornerRadius),
+            Parent = Menu,
+        })
     else
         Menu = New("Frame", {
             BackgroundColor3 = "BackgroundColor",
@@ -1763,6 +1767,10 @@ function Library:AddContextMenu(
             DPIExclude = {
                 Position = true,
             },
+        })
+        New("UICorner", {
+            CornerRadius = UDim.new(0, Library.CornerRadius),
+            Parent = Menu,
         })
     end
 
