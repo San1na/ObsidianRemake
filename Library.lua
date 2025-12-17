@@ -198,14 +198,8 @@ local Library = {
         Font = Font.fromEnum(Enum.Font.GothamMedium),
 
         Red = Color3.fromRGB(255, 85, 85),
-        Green = Color3.fromRGB(85, 255, 150),
-        Blue = Color3.fromRGB(85, 150, 255),
-        Yellow = Color3.fromRGB(255, 220, 85),
-        Orange = Color3.fromRGB(255, 150, 85),
-        Purple = Color3.fromRGB(180, 85, 255),
         Dark = Color3.fromRGB(10, 10, 12),
         White = Color3.fromRGB(255, 255, 255),
-        Gray = Color3.fromRGB(120, 120, 130),
     },
 
     Registry = {},
@@ -410,38 +404,6 @@ local Templates = {
 
         Callback = function() end,
         Changed = function() end,
-    },
-    
-    --// New Elements \\-
-    ProgressBar = {
-        Text = "Progress",
-        Default = 0,
-        Min = 0,
-        Max = 100,
-        ShowValue = true,
-        Animated = true,
-        Color = nil,
-        Height = 20,
-        Visible = true,
-    },
-    Badge = {
-        Text = "Badge",
-        Color = nil,
-        Icon = nil,
-        Visible = true,
-    },
-    Card = {
-        Title = "Card",
-        Description = "",
-        Icon = nil,
-        Color = nil,
-        Height = 80,
-        Callback = function() end,
-        Visible = true,
-    },
-    TextSeparator = {
-        Text = "Separator",
-        Visible = true,
     },
 }
 
