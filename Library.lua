@@ -162,8 +162,8 @@ local Library = {
     Notifications = {},
 
     ToggleKeybind = Enum.KeyCode.RightControl,
-    TweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-    NotifyTweenInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+    TweenInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+    NotifyTweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
 
     Toggled = false,
     Unloaded = false,
@@ -186,20 +186,26 @@ local Library = {
 
     MinSize = Vector2.new(480, 360),
     DPIScale = 1,
-    CornerRadius = 4,
+    CornerRadius = 6,
 
     IsLightTheme = false,
     Scheme = {
-        BackgroundColor = Color3.fromRGB(15, 15, 15),
-        MainColor = Color3.fromRGB(25, 25, 25),
-        AccentColor = Color3.fromRGB(125, 85, 255),
-        OutlineColor = Color3.fromRGB(40, 40, 40),
-        FontColor = Color3.new(1, 1, 1),
-        Font = Font.fromEnum(Enum.Font.Code),
+        BackgroundColor = Color3.fromRGB(18, 18, 22),
+        MainColor = Color3.fromRGB(28, 28, 35),
+        AccentColor = Color3.fromRGB(138, 99, 255),
+        OutlineColor = Color3.fromRGB(45, 45, 55),
+        FontColor = Color3.fromRGB(245, 245, 250),
+        Font = Font.fromEnum(Enum.Font.GothamMedium),
 
-        Red = Color3.fromRGB(255, 50, 50),
-        Dark = Color3.new(0, 0, 0),
-        White = Color3.new(1, 1, 1),
+        Red = Color3.fromRGB(255, 85, 85),
+        Green = Color3.fromRGB(85, 255, 150),
+        Blue = Color3.fromRGB(85, 150, 255),
+        Yellow = Color3.fromRGB(255, 220, 85),
+        Orange = Color3.fromRGB(255, 150, 85),
+        Purple = Color3.fromRGB(180, 85, 255),
+        Dark = Color3.fromRGB(10, 10, 12),
+        White = Color3.fromRGB(255, 255, 255),
+        Gray = Color3.fromRGB(120, 120, 130),
     },
 
     Registry = {},
@@ -404,6 +410,38 @@ local Templates = {
 
         Callback = function() end,
         Changed = function() end,
+    },
+    
+    --// New Elements \\-
+    ProgressBar = {
+        Text = "Progress",
+        Default = 0,
+        Min = 0,
+        Max = 100,
+        ShowValue = true,
+        Animated = true,
+        Color = nil,
+        Height = 20,
+        Visible = true,
+    },
+    Badge = {
+        Text = "Badge",
+        Color = nil,
+        Icon = nil,
+        Visible = true,
+    },
+    Card = {
+        Title = "Card",
+        Description = "",
+        Icon = nil,
+        Color = nil,
+        Height = 80,
+        Callback = function() end,
+        Visible = true,
+    },
+    TextSeparator = {
+        Text = "Separator",
+        Visible = true,
     },
 }
 
