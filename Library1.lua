@@ -2719,6 +2719,10 @@ do
             Text = "",
             Parent = ToggleLabel,
         })
+        New("UICorner", {
+            CornerRadius = UDim.new(0, Library.CornerRadius),
+            Parent = Holder,
+        })
 
         local HolderTransparency = New("ImageLabel", {
             Image = CustomImageManager.GetAsset("TransparencyTexture"),
@@ -2727,6 +2731,10 @@ do
             Size = UDim2.fromScale(1, 1),
             TileSize = UDim2.fromOffset(9, 9),
             Parent = Holder,
+        })
+        New("UICorner", {
+            CornerRadius = UDim.new(0, Library.CornerRadius),
+            Parent = HolderTransparency,
         })
 
         --// Color Menu \\--
@@ -2778,6 +2786,10 @@ do
             Size = UDim2.fromOffset(200, 200),
             Parent = ColorHolder,
         })
+        New("UICorner", {
+            CornerRadius = UDim.new(0, Library.CornerRadius),
+            Parent = SatVipMap,
+        })
 
         local SatVibCursor = New("Frame", {
             AnchorPoint = Vector2.new(0.5, 0.5),
@@ -2799,6 +2811,10 @@ do
             Size = UDim2.fromOffset(16, 200),
             Text = "",
             Parent = ColorHolder,
+        })
+        New("UICorner", {
+            CornerRadius = UDim.new(0, Library.CornerRadius),
+            Parent = HueSelector,
         })
         New("UIGradient", {
             Color = ColorSequence.new(HueSequenceTable),
@@ -2826,11 +2842,19 @@ do
                 TileSize = UDim2.fromOffset(8, 8),
                 Parent = ColorHolder,
             })
+            New("UICorner", {
+                CornerRadius = UDim.new(0, Library.CornerRadius),
+                Parent = TransparencySelector,
+            })
 
             TransparencyColor = New("Frame", {
                 BackgroundColor3 = ColorPicker.Value,
                 Size = UDim2.fromScale(1, 1),
                 Parent = TransparencySelector,
+            })
+            New("UICorner", {
+                CornerRadius = UDim.new(0, Library.CornerRadius),
+                Parent = TransparencyColor,
             })
             New("UIGradient", {
                 Rotation = 90,
@@ -2874,6 +2898,10 @@ do
             TextSize = 14,
             Parent = InfoHolder,
         })
+        New("UICorner", {
+            CornerRadius = UDim.new(0, Library.CornerRadius),
+            Parent = HueBox,
+        })
 
         local RgbBox = New("TextBox", {
             BackgroundColor3 = "MainColor",
@@ -2884,6 +2912,10 @@ do
             Text = "?, ?, ?",
             TextSize = 14,
             Parent = InfoHolder,
+        })
+        New("UICorner", {
+            CornerRadius = UDim.new(0, Library.CornerRadius),
+            Parent = RgbBox,
         })
 
         --// Context Menu \\--
