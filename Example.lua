@@ -2,7 +2,7 @@
 -- example script by https://github.com/mstudio45/LinoriaLib/blob/main/Example.lua and modified by deivid
 -- You can suggest changes with a pull request or something
 
-local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
+local repo = "https://raw.githubusercontent.com/San1na/ObsidianRemake/main/"
 local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
 local ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
 local SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
@@ -19,12 +19,12 @@ local Window = Library:CreateWindow({
 	-- Set Resizable to true if you want to have in-game resizable Window
 	-- Set MobileButtonsSide to "Left" or "Right" if you want the ui toggle & lock buttons to be on the left or right side of the window
 	-- Set ShowCustomCursor to false if you don't want to use the Linoria cursor
-	-- NotifySide = Changes the side of the notifications (Left, Right) (Default value = Left)
+	-- NotifySide = Changes the side of the notifications (Left, Right) (Default value = Right)
 	-- Position and Size are also valid options here
 	-- but you do not need to define them unless you are changing them :)
 
-	Title = "mspaint",
-	Footer = "version: example",
+	Title = "Obsidian UI Library",
+	Footer = "v2.0 - Enhanced Edition",
 	Icon = 95816097006870,
 	NotifySide = "Right",
 	ShowCustomCursor = true,
@@ -763,3 +763,312 @@ ThemeManager:ApplyToTab(Tabs["UI Settings"])
 -- You can use the SaveManager:LoadAutoloadConfig() to load a config
 -- which has been marked to be one that auto loads!
 SaveManager:LoadAutoloadConfig()
+
+--[[
+	NEW FEATURES SHOWCASE
+	Below are examples of new UI elements added in v2.0
+]]
+
+-- Create a new tab for showcasing new features
+local NewFeaturesTab = Window:AddTab("New Features", "sparkles")
+
+-- Progress Bar Example
+local ProgressGroup = NewFeaturesTab:AddLeftGroupbox("Progress Bars", "activity")
+
+ProgressGroup:AddLabel("Progress bars show visual progress")
+
+-- Basic Progress Bar
+local MyProgressBar = ProgressGroup:AddProgressBar("MyProgress", {
+	Text = "Loading Progress",
+	Default = 0,
+	Min = 0,
+	Max = 100,
+	ShowValue = true,
+	Animated = true,
+	Color = Library.Scheme.AccentColor,
+})
+
+-- Simulate progress
+task.spawn(function()
+	while task.wait(0.1) do
+		if Library.Unloaded then break end
+		local currentValue = Options.MyProgress and Options.MyProgress.Value or 0
+		if currentValue < 100 then
+			if Options.MyProgress then
+				Options.MyProgress:SetValue(currentValue + 1)
+			end
+		else
+			task.wait(1)
+			if Options.MyProgress then
+				Options.MyProgress:SetValue(0)
+			end
+		end
+	end
+end)
+
+-- Colored Progress Bars
+ProgressGroup:AddProgressBar("HealthBar", {
+	Text = "Health",
+	Default = 75,
+	Min = 0,
+	Max = 100,
+	ShowValue = true,
+	Color = Library.Scheme.Green,
+})
+
+ProgressGroup:AddProgressBar("ManaBar", {
+	Text = "Mana",
+	Default = 50,
+	Min = 0,
+	Max = 100,
+	ShowValue = true,
+	Color = Library.Scheme.Blue,
+})
+
+ProgressGroup:AddProgressBar("ExperienceBar", {
+	Text = "Experience",
+	Default = 30,
+	Min = 0,
+	Max = 100,
+	ShowValue = true,
+	Color = Library.Scheme.Yellow,
+})
+
+-- Badges Example
+local BadgeGroup = NewFeaturesTab:AddRightGroupbox("Badges & Cards", "award")
+
+BadgeGroup:AddLabel("Badges for status indicators")
+
+BadgeGroup:AddBadge("StatusBadge", {
+	Text = "Online",
+	Color = Library.Scheme.Green,
+})
+
+BadgeGroup:AddBadge("PremiumBadge", {
+	Text = "Premium",
+	Color = Library.Scheme.Purple,
+})
+
+BadgeGroup:AddBadge("WarningBadge", {
+	Text = "Warning",
+	Color = Library.Scheme.Orange,
+})
+
+BadgeGroup:AddDivider()
+
+-- Cards Example
+BadgeGroup:AddLabel("Interactive cards")
+
+BadgeGroup:AddCard("InfoCard", {
+	Title = "Information",
+	Description = "This is an informational card with a description",
+	Color = Library.Scheme.Blue,
+	Callback = function()
+		Library:Notify({
+			Title = "Card Clicked",
+			Description = "You clicked the information card!",
+			Time = 3,
+		})
+	end,
+})
+
+BadgeGroup:AddCard("SuccessCard", {
+	Title = "Success",
+	Description = "Operation completed successfully",
+	Color = Library.Scheme.Green,
+	Callback = function()
+		Library:Notify({
+			Title = "Success",
+			Description = "Everything is working perfectly!",
+			Time = 3,
+		})
+	end,
+})
+
+BadgeGroup:AddCard("ErrorCard", {
+	Title = "Error",
+	Description = "Something went wrong",
+	Color = Library.Scheme.Red,
+	Callback = function()
+		Library:Notify({
+			Title = "Error",
+			Description = "This is just a demo error",
+			Time = 3,
+		})
+	end,
+})
+
+-- Text Separators
+local SeparatorGroup = NewFeaturesTab:AddLeftGroupbox("Text Separators", "minus")
+
+SeparatorGroup:AddLabel("Separators with text labels")
+
+SeparatorGroup:AddTextSeparator("Section1", {
+	Text = "Section 1",
+})
+
+SeparatorGroup:AddToggle("Toggle1", {
+	Text = "Toggle in Section 1",
+	Default = false,
+})
+
+SeparatorGroup:AddTextSeparator("Section2", {
+	Text = "Section 2",
+})
+
+SeparatorGroup:AddToggle("Toggle2", {
+	Text = "Toggle in Section 2",
+	Default = false,
+})
+
+SeparatorGroup:AddTextSeparator("Section3", {
+	Text = "Section 3",
+})
+
+SeparatorGroup:AddToggle("Toggle3", {
+	Text = "Toggle in Section 3",
+	Default = false,
+})
+
+-- Enhanced Notifications
+local NotificationGroup = NewFeaturesTab:AddRightGroupbox("Enhanced Notifications", "bell")
+
+NotificationGroup:AddLabel("Test different notification styles")
+
+NotificationGroup:AddButton({
+	Text = "Success Notification",
+	Func = function()
+		Library:Notify({
+			Title = "Success!",
+			Description = "Operation completed successfully",
+			Time = 4,
+			Type = "Success",
+		})
+	end,
+})
+
+NotificationGroup:AddButton({
+	Text = "Error Notification",
+	Func = function()
+		Library:Notify({
+			Title = "Error!",
+			Description = "Something went wrong",
+			Time = 4,
+			Type = "Error",
+		})
+	end,
+})
+
+NotificationGroup:AddButton({
+	Text = "Warning Notification",
+	Func = function()
+		Library:Notify({
+			Title = "Warning!",
+			Description = "Please be careful",
+			Time = 4,
+			Type = "Warning",
+		})
+	end,
+})
+
+NotificationGroup:AddButton({
+	Text = "Info Notification",
+	Func = function()
+		Library:Notify({
+			Title = "Information",
+			Description = "Here's some useful information",
+			Time = 4,
+			Type = "Info",
+		})
+	end,
+})
+
+NotificationGroup:AddDivider()
+
+NotificationGroup:AddButton({
+	Text = "Long Notification",
+	Func = function()
+		Library:Notify({
+			Title = "Long Message",
+			Description = "This is a longer notification message that demonstrates how the UI handles multiple lines of text. It should wrap nicely and remain readable.",
+			Time = 6,
+		})
+	end,
+})
+
+-- Color Scheme Showcase
+local ColorGroup = NewFeaturesTab:AddLeftGroupbox("Color Scheme", "palette")
+
+ColorGroup:AddLabel("New color palette:")
+
+ColorGroup:AddLabel("🔴 Red - Errors & Warnings", true)
+ColorGroup:AddLabel("🟢 Green - Success & Health", true)
+ColorGroup:AddLabel("🔵 Blue - Information", true)
+ColorGroup:AddLabel("🟡 Yellow - Caution & XP", true)
+ColorGroup:AddLabel("🟠 Orange - Alerts", true)
+ColorGroup:AddLabel("🟣 Purple - Premium & Special", true)
+
+ColorGroup:AddDivider()
+
+ColorGroup:AddButton({
+	Text = "Test All Colors",
+	Func = function()
+		local colors = {
+			{name = "Red", color = Library.Scheme.Red},
+			{name = "Green", color = Library.Scheme.Green},
+			{name = "Blue", color = Library.Scheme.Blue},
+			{name = "Yellow", color = Library.Scheme.Yellow},
+			{name = "Orange", color = Library.Scheme.Orange},
+			{name = "Purple", color = Library.Scheme.Purple},
+		}
+		
+		for i, colorData in ipairs(colors) do
+			task.wait(0.5)
+			Library:Notify({
+				Title = colorData.name .. " Color",
+				Description = "This notification uses the " .. colorData.name:lower() .. " color scheme",
+				Time = 3,
+			})
+		end
+	end,
+})
+
+-- Animation Showcase
+local AnimationGroup = NewFeaturesTab:AddRightGroupbox("Animations", "zap")
+
+AnimationGroup:AddLabel("Enhanced animations with Quart easing")
+
+AnimationGroup:AddToggle("AnimationDemo", {
+	Text = "Toggle for smooth animation",
+	Default = false,
+	Callback = function(Value)
+		Library:Notify({
+			Title = "Animation Demo",
+			Description = Value and "Enabled with smooth animation" or "Disabled with smooth animation",
+			Time = 2,
+		})
+	end,
+})
+
+AnimationGroup:AddSlider("AnimationSlider", {
+	Text = "Smooth slider animation",
+	Default = 50,
+	Min = 0,
+	Max = 100,
+	Rounding = 0,
+})
+
+AnimationGroup:AddDivider()
+
+AnimationGroup:AddLabel("Notification animations use Back easing for a bouncy effect")
+
+AnimationGroup:AddButton({
+	Text = "Test Notification Animation",
+	Func = function()
+		Library:Notify({
+			Title = "Bouncy Animation!",
+			Description = "Notice the smooth bounce effect",
+			Time = 3,
+		})
+	end,
+})
