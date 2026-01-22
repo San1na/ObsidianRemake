@@ -190,16 +190,21 @@ local Library = {
 
     IsLightTheme = false,
     Scheme = {
-        BackgroundColor = Color3.fromRGB(0, 0, 0),           -- Черный фон терминала
-        MainColor = Color3.fromRGB(12, 12, 12),              -- Темно-серый для панелей
-        AccentColor = Color3.fromRGB(0, 255, 0),             -- Зеленый акцент (классический терминал)
-        OutlineColor = Color3.fromRGB(0, 255, 0),            -- Зеленая обводка
-        FontColor = Color3.fromRGB(0, 255, 0),               -- Зеленый текст
-        Font = Font.fromEnum(Enum.Font.RobotoMono),          -- Моноширинный шрифт
+        BackgroundColor = Color3.fromRGB(10, 12, 14),        -- Deep dark blue-grey
+        MainColor = Color3.fromRGB(5, 5, 5),                 -- Pure black for panels
+        AccentColor = Color3.fromRGB(0, 255, 140),           -- Neon Cyan/Green
+        AccentDim = Color3.fromRGB(0, 100, 60),              -- Dimmed Accent
+        OutlineColor = Color3.fromRGB(40, 40, 40),           -- Subtle borders
+        FontColor = Color3.fromRGB(220, 220, 220),           -- White-ish
+        TextDim = Color3.fromRGB(100, 100, 100),             -- Grey
+        Font = Font.fromEnum(Enum.Font.Code),                -- Monospace terminal font
 
-        Red = Color3.fromRGB(255, 0, 0),                     -- Красный для ошибок
-        Dark = Color3.fromRGB(0, 0, 0),                      -- Черный
-        White = Color3.fromRGB(0, 255, 0),                   -- Зеленый вместо белого
+        Red = Color3.fromRGB(255, 50, 50),                   -- Hard Red
+        Warn = Color3.fromRGB(255, 180, 0),                  -- Amber
+        Success = Color3.fromRGB(50, 255, 50),               -- Green
+        Dark = Color3.fromRGB(5, 5, 5),                      -- Pure black
+        White = Color3.fromRGB(255, 255, 255),               -- Pure white for inversion
+        Selection = Color3.fromRGB(255, 255, 255),           -- For hover inversion
     },
 
     Registry = {},
@@ -282,10 +287,10 @@ local Templates = {
         Resizable = true,
         SearchbarSize = UDim2.fromScale(1, 1),
         GlobalSearch = false,
-        CornerRadius = 0,  -- Прямоугольные углы для терминала
+        CornerRadius = 0,  -- Terminal style - no rounded corners
         NotifySide = "Right",
-        ShowCustomCursor = false,  -- Отключаем кастомный курсор
-        Font = Enum.Font.RobotoMono,  -- Моноширинный шрифт
+        ShowCustomCursor = false,  -- Use system cursor
+        Font = Enum.Font.Code,  -- Monospace terminal font
         ToggleKeybind = Enum.KeyCode.RightControl,
         MobileButtonsSide = "Left",
         UnlockMouseWhileOpen = true,
@@ -3383,20 +3388,49 @@ do
                     return
                 end
 
+                -- Terminal style: Invert colors on hover (Background becomes Accent, Text becomes Black)
                 Button.Tween = TweenService:Create(Button.Base, Library.TweenInfo, {
+                    BackgroundColor3 = Library.Scheme.AccentColor,
+                    TextColor3 = Color3.new(0, 0, 0),
                     TextTransparency = 0,
                 })
                 Button.Tween:Play()
+                
+                if Button.Stroke then
+                    TweenService:Create(Button.Stroke, Library.TweenInfo, {
+                        Color = Library.Scheme.AccentColor,
+                    }):Play()
+                end
             end)
             Button.Base.MouseLeave:Connect(function()
                 if Button.Disabled then
                     return
                 end
 
+                -- Terminal style: Restore original colors
                 Button.Tween = TweenService:Create(Button.Base, Library.TweenInfo, {
-                    TextTransparency = 0.4,
+                    BackgroundColor3 = Library.Scheme.MainColor,
+                    TextColor3 = Button.Risky and Library.Scheme.Red or Library.Scheme.FontColor,
+                    TextTransparency = 0.2,
                 })
                 Button.Tween:Play()
+                
+                if Button.Stroke then
+                    TweenService:Create(Button.Stroke, Library.TweenInfo, {
+                        Color = Library.Scheme.OutlineColor,
+                    }):Play()
+                end
+            end)
+            
+            Button.Base.MouseButton1Down:Connect(function()
+                if Button.Disabled or Button.Locked then
+                    return
+                end
+                
+                -- Terminal style: Flash white on click
+                Button.Base.BackgroundColor3 = Color3.new(1, 1, 1)
+                task.wait(0.05)
+                Button.Base.BackgroundColor3 = Library.Scheme.AccentColor
             end)
 
             Button.Base.MouseButton1Click:Connect(function()
