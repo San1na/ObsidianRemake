@@ -118,6 +118,22 @@ do
         ["Material"] = {
             18,
             { FontColor = "eeffff", MainColor = "212121", AccentColor = "82aaff", BackgroundColor = "151515", OutlineColor = "424242" },
+        },
+        ["Linux Terminal"] = {
+            19,
+            { FontColor = "00ff00", MainColor = "0c0c0c", AccentColor = "00ff00", BackgroundColor = "000000", OutlineColor = "00ff00" },
+        },
+        ["Windows Terminal"] = {
+            20,
+            { FontColor = "cccccc", MainColor = "0c0c0c", AccentColor = "0078d7", BackgroundColor = "000000", OutlineColor = "0078d7" },
+        },
+        ["Amber Terminal"] = {
+            21,
+            { FontColor = "ffb000", MainColor = "0c0c0c", AccentColor = "ffb000", BackgroundColor = "000000", OutlineColor = "ffb000" },
+        },
+        ["Green Phosphor"] = {
+            22,
+            { FontColor = "33ff33", MainColor = "001100", AccentColor = "33ff33", BackgroundColor = "000000", OutlineColor = "33ff33" },
         }
     }
 
