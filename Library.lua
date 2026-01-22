@@ -174,7 +174,7 @@ local Library = {
     Options = Options,
 
     NotifySide = "Right",
-    ShowCustomCursor = true,
+    ShowCustomCursor = false,  -- Отключаем кастомный курсор для терминального стиля
     ForceCheckbox = false,
     ShowToggleFrameInKeybinds = true,
     NotifyOnError = false,
@@ -186,20 +186,20 @@ local Library = {
 
     MinSize = Vector2.new(480, 360),
     DPIScale = 1,
-    CornerRadius = 6,
+    CornerRadius = 0,  -- Убираем скругление углов для терминального вида
 
     IsLightTheme = false,
     Scheme = {
-        BackgroundColor = Color3.fromRGB(18, 18, 22),
-        MainColor = Color3.fromRGB(28, 28, 35),
-        AccentColor = Color3.fromRGB(138, 99, 255),
-        OutlineColor = Color3.fromRGB(45, 45, 55),
-        FontColor = Color3.fromRGB(245, 245, 250),
-        Font = Font.fromEnum(Enum.Font.GothamMedium),
+        BackgroundColor = Color3.fromRGB(0, 0, 0),           -- Черный фон терминала
+        MainColor = Color3.fromRGB(12, 12, 12),              -- Темно-серый для панелей
+        AccentColor = Color3.fromRGB(0, 255, 0),             -- Зеленый акцент (классический терминал)
+        OutlineColor = Color3.fromRGB(0, 255, 0),            -- Зеленая обводка
+        FontColor = Color3.fromRGB(0, 255, 0),               -- Зеленый текст
+        Font = Font.fromEnum(Enum.Font.RobotoMono),          -- Моноширинный шрифт
 
-        Red = Color3.fromRGB(255, 85, 85),
-        Dark = Color3.fromRGB(10, 10, 12),
-        White = Color3.fromRGB(255, 255, 255),
+        Red = Color3.fromRGB(255, 0, 0),                     -- Красный для ошибок
+        Dark = Color3.fromRGB(0, 0, 0),                      -- Черный
+        White = Color3.fromRGB(0, 255, 0),                   -- Зеленый вместо белого
     },
 
     Registry = {},
@@ -282,10 +282,10 @@ local Templates = {
         Resizable = true,
         SearchbarSize = UDim2.fromScale(1, 1),
         GlobalSearch = false,
-        CornerRadius = 6,
+        CornerRadius = 0,  -- Прямоугольные углы для терминала
         NotifySide = "Right",
-        ShowCustomCursor = true,
-        Font = Enum.Font.GothamMedium,
+        ShowCustomCursor = false,  -- Отключаем кастомный курсор
+        Font = Enum.Font.RobotoMono,  -- Моноширинный шрифт
         ToggleKeybind = Enum.KeyCode.RightControl,
         MobileButtonsSide = "Left",
         UnlockMouseWhileOpen = true,
