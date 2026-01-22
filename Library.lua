@@ -3361,7 +3361,7 @@ do
                 Active = not Button.Disabled,
                 BackgroundColor3 = Button.Disabled and "BackgroundColor" or "MainColor",
                 Size = UDim2.fromScale(1, 1),
-                Text = Button.Text,
+                Text = "> " .. Button.Text,  -- Терминальный префикс
                 TextSize = 14,
                 TextTransparency = 0.2,
                 Visible = Button.Visible,
@@ -3651,9 +3651,9 @@ do
 
         local Label = New("TextLabel", {
             BackgroundTransparency = 1,
-            Position = UDim2.fromOffset(26, 0),
-            Size = UDim2.new(1, -26, 1, 0),
-            Text = Toggle.Text,
+            Position = UDim2.fromOffset(0, 0),
+            Size = UDim2.new(1, 0, 1, 0),
+            Text = "[ ] " .. Toggle.Text,  -- Текстовый стиль терминала
             TextSize = 14,
             TextTransparency = 0.4,
             TextXAlignment = Enum.TextXAlignment.Left,
@@ -3667,32 +3667,10 @@ do
             Parent = Label,
         })
 
-        local Checkbox = New("Frame", {
-            BackgroundColor3 = "MainColor",
-            Size = UDim2.fromScale(1, 1),
-            SizeConstraint = Enum.SizeConstraint.RelativeYY,
-            Parent = Button,
-        })
-        New("UICorner", {
-            CornerRadius = UDim.new(0, Library.CornerRadius),
-            Parent = Checkbox,
-        })
-
-        local CheckboxStroke = New("UIStroke", {
-            Color = "OutlineColor",
-            Parent = Checkbox,
-        })
-
-        local CheckImage = New("ImageLabel", {
-            Image = CheckIcon and CheckIcon.Url or "",
-            ImageColor3 = "FontColor",
-            ImageRectOffset = CheckIcon and CheckIcon.ImageRectOffset or Vector2.zero,
-            ImageRectSize = CheckIcon and CheckIcon.ImageRectSize or Vector2.zero,
-            ImageTransparency = 1,
-            Position = UDim2.fromOffset(3, 3),
-            Size = UDim2.new(1, -6, 1, -6),
-            Parent = Checkbox,
-        })
+        -- Убираем графический чекбокс, используем только текст
+        local Checkbox = Button  -- Используем сам Button вместо отдельного Frame
+        local CheckboxStroke = nil  -- Убираем обводку
+        local CheckImage = nil  -- Убираем иконку
 
         function Toggle:UpdateColors()
             Toggle:Display()
@@ -3703,27 +3681,18 @@ do
                 return
             end
 
-            CheckboxStroke.Transparency = Toggle.Disabled and 0.5 or 0
-
+            -- Обновляем текст в терминальном стиле
             if Toggle.Disabled then
                 Label.TextTransparency = 0.8
-                CheckImage.ImageTransparency = Toggle.Value and 0.8 or 1
-
-                Checkbox.BackgroundColor3 = Library.Scheme.BackgroundColor
-                Library.Registry[Checkbox].BackgroundColor3 = "BackgroundColor"
-
+                Label.Text = (Toggle.Value and "[X] " or "[ ] ") .. Toggle.Text
                 return
             end
 
+            Label.Text = (Toggle.Value and "[X] " or "[ ] ") .. Toggle.Text
+            
             TweenService:Create(Label, Library.TweenInfo, {
                 TextTransparency = Toggle.Value and 0 or 0.4,
             }):Play()
-            TweenService:Create(CheckImage, Library.TweenInfo, {
-                ImageTransparency = Toggle.Value and 0 or 1,
-            }):Play()
-
-            Checkbox.BackgroundColor3 = Library.Scheme.MainColor
-            Library.Registry[Checkbox].BackgroundColor3 = "MainColor"
         end
 
         function Toggle:OnChanged(Func)
@@ -4087,7 +4056,7 @@ do
         local Label = New("TextLabel", {
             BackgroundTransparency = 1,
             Size = UDim2.new(1, 0, 0, 14),
-            Text = Input.Text,
+            Text = "$ " .. Input.Text,  -- Терминальный префикс
             TextSize = 14,
             TextXAlignment = Enum.TextXAlignment.Left,
             Parent = Holder,
@@ -4332,17 +4301,25 @@ do
                 CustomDisplayText = Info.FormatDisplayValue(Slider, Slider.Value)
             end
 
+            -- Терминальный стиль: текстовый прогресс-бар
+            local X = (Slider.Value - Slider.Min) / (Slider.Max - Slider.Min)
+            local barLength = 20  -- Длина прогресс-бара в символах
+            local filled = math.floor(X * barLength)
+            local empty = barLength - filled
+            local progressBar = string.rep("=", filled) .. string.rep("-", empty)
+
             if CustomDisplayText then
                 DisplayLabel.Text = tostring(CustomDisplayText)
             else
                 if Info.Compact then
-                    DisplayLabel.Text =
-                        string.format("%s: %s%s%s", Slider.Text, Slider.Prefix, Slider.Value, Slider.Suffix)
+                    DisplayLabel.Text = string.format("%s: [%s] %s%s%s", 
+                        Slider.Text, progressBar, Slider.Prefix, Slider.Value, Slider.Suffix)
                 elseif Info.HideMax then
-                    DisplayLabel.Text = string.format("%s%s%s", Slider.Prefix, Slider.Value, Slider.Suffix)
+                    DisplayLabel.Text = string.format("[%s] %s%s%s", 
+                        progressBar, Slider.Prefix, Slider.Value, Slider.Suffix)
                 else
-                    DisplayLabel.Text = string.format(
-                        "%s%s%s/%s%s%s",
+                    DisplayLabel.Text = string.format("[%s] %s%s%s/%s%s%s",
+                        progressBar,
                         Slider.Prefix,
                         Slider.Value,
                         Slider.Suffix,
@@ -4353,7 +4330,6 @@ do
                 end
             end
 
-            local X = (Slider.Value - Slider.Min) / (Slider.Max - Slider.Min)
             Fill.Size = UDim2.fromScale(X, 1)
         end
 
@@ -4529,7 +4505,7 @@ do
         local Label = New("TextLabel", {
             BackgroundTransparency = 1,
             Size = UDim2.new(1, 0, 0, 14),
-            Text = Dropdown.Text,
+            Text = "> " .. (Dropdown.Text or ""),  -- Терминальный префикс
             TextSize = 14,
             TextXAlignment = Enum.TextXAlignment.Left,
             Visible = not not Info.Text,
@@ -4544,7 +4520,7 @@ do
             BorderSizePixel = 1,
             Position = UDim2.fromScale(0, 1),
             Size = UDim2.new(1, 0, 0, 26),
-            Text = "---",
+            Text = "[ --- ]",  -- Терминальный стиль с квадратными скобками
             TextSize = 14,
             TextXAlignment = Enum.TextXAlignment.Left,
             Parent = Holder,
@@ -4665,7 +4641,8 @@ do
                 Str = Str:sub(1, 22) .. "..."
             end
 
-            Display.Text = (Str == "" and "---" or Str)
+            -- Терминальный стиль с квадратными скобками
+            Display.Text = (Str == "" and "[ --- ]" or "[ " .. Str .. " ]")
         end
 
         function Dropdown:OnChanged(Func)
@@ -4711,7 +4688,7 @@ do
                     BackgroundTransparency = 1,
                     LayoutOrder = IsDisabled and 1 or 0,
                     Size = UDim2.new(1, 0, 0, 21),
-                    Text = tostring(Value),
+                    Text = (Info.FormatDisplayValue and tostring(Info.FormatDisplayValue(Value)) or tostring(Value)),
                     TextSize = 14,
                     TextTransparency = 0.5,
                     TextXAlignment = Enum.TextXAlignment.Left,
@@ -4741,6 +4718,10 @@ do
                         Selected = Dropdown.Value == Value
                     end
 
+                    -- Терминальный стиль: добавляем префикс > для выбранного элемента
+                    local displayText = (Info.FormatDisplayValue and tostring(Info.FormatDisplayValue(Value)) or tostring(Value))
+                    Button.Text = (Selected and "> " or "  ") .. displayText
+                    
                     Button.BackgroundTransparency = Selected and 0 or 1
                     Button.TextTransparency = IsDisabled and 0.8 or Selected and 0 or 0.5
                 end
