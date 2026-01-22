@@ -119,21 +119,21 @@ do
             18,
             { FontColor = "eeffff", MainColor = "212121", AccentColor = "82aaff", BackgroundColor = "151515", OutlineColor = "424242" },
         },
-        ["Linux Terminal"] = {
+        ["Terminal Cyan"] = {
             19,
-            { FontColor = "00ff00", MainColor = "0c0c0c", AccentColor = "00ff00", BackgroundColor = "000000", OutlineColor = "00ff00" },
+            { FontColor = "dcdcdc", MainColor = "050505", AccentColor = "00ff8c", BackgroundColor = "0a0c0e", OutlineColor = "282828" },
         },
-        ["Windows Terminal"] = {
+        ["Terminal Green"] = {
             20,
-            { FontColor = "cccccc", MainColor = "0c0c0c", AccentColor = "0078d7", BackgroundColor = "000000", OutlineColor = "0078d7" },
+            { FontColor = "dcdcdc", MainColor = "050505", AccentColor = "00ff00", BackgroundColor = "0a0c0e", OutlineColor = "282828" },
         },
-        ["Amber Terminal"] = {
+        ["Terminal Amber"] = {
             21,
-            { FontColor = "ffb000", MainColor = "0c0c0c", AccentColor = "ffb000", BackgroundColor = "000000", OutlineColor = "ffb000" },
+            { FontColor = "dcdcdc", MainColor = "050505", AccentColor = "ffb400", BackgroundColor = "0a0c0e", OutlineColor = "282828" },
         },
-        ["Green Phosphor"] = {
+        ["Terminal Blue"] = {
             22,
-            { FontColor = "33ff33", MainColor = "001100", AccentColor = "33ff33", BackgroundColor = "000000", OutlineColor = "33ff33" },
+            { FontColor = "dcdcdc", MainColor = "050505", AccentColor = "00aaff", BackgroundColor = "0a0c0e", OutlineColor = "282828" },
         }
     }
 
